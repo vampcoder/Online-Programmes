@@ -1,3 +1,5 @@
+// Basic implementation of Rabin Karp with only one hashing function
+
 #include <bits/stdc++.h>
 
 using namespace std;

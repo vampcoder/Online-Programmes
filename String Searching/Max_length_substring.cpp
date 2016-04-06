@@ -1,3 +1,7 @@
+// Modified Version of Rolling hash with Binary search. Input two strings, the code will output the maximum length of substring in both string.
+// Time complexity is O(n*log(n)*log(n))     log(n) for binary search over length l, n*log(n) for comparing substrings of length l.  This N*log(N)
+// can be reduced to  N if we choose two primes of less than 10^6.  This way we can use hash(O(N) complexity) rather than stl map(log(n) complexity).
+
 #include <bits/stdc++.h>
 
 using namespace std;

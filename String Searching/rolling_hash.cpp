@@ -1,3 +1,6 @@
+// Modified Rabin Karp, for strings of very large length to reduce collision. idea is to take two independent and different B and M and check
+// for each substring that value is same for both function or not.
+
 #include <bits/stdc++.h>
 
 using namespace std;
