@@ -31,6 +31,7 @@ int main()
     l = strlen(str);
     int l1 = strlen(pat);
     for(int i = 0; i < l ;i++)
-        cout << z[i];
+        if(z[i] == l1)
+            cout << i-l1-1 << " ";
     cout << endl;
 }
