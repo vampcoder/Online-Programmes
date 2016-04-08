@@ -1,60 +1,62 @@
-#include<iostream>
-#include<vector>
-#include<string>
-#include<algorithm>
-#include<cstdio>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-void Compute_prefix(string & p, int lps[]){
-	int m = p.length()+1;
-	lps[1] = 0;
-	int k = 0;
-	for(int q= 2; q < m; q++){
-		while(k>0 && p[k] != p[q-1])
-			k = lps[k];
-		if(p[k] == p[q-1])
-			k++;
-		lps[q] = k;
-	}
+char text[1000010];
+char pat[1000010];
+char str[1000010];
+int z[1000010] = {0};
+
+void zfunc(){
+    int lp = strlen(pat);
+    int count = 0;
+    bool flag = true;
+    char ch;
+    int j = 0;
+    scanf("%c", &ch);
+
+    while(1){
+        while(ch != '\0' && ch != '\n' && j < lp+2){
+            str[j + lp + 1] = ch;
+            j++;
+            scanf("%c", &ch);
+        }
+        str[j] = '\0';
+        int n = strlen(str);
+        int mark = 0;
+        for(int i = lp+1, l = lp, r = lp; i < n; i++){
+            if(i <= r)
+                z[i] = min(r-i+1, z[i-l]);
+            while(i + z[i] < n && str[z[i]] == str[i + z[i]])
+                ++z[i];
+            if (i + z[i] - l > r)
+                l = i, r = i + z[i] -1;
+            if(z[i] == lp){
+                flag = false;
+                cout << count << endl;
+                mark = i;
+            }
+        }
+
+        if(ch == '\0' || ch == '\n')
+            break;
+    }
+    if(flag)
+        cout << endl;
 }
-void KMP_Matcher(string & t, string & p ){
-	int m = p.length()+1;
-	int n = t.length()+1;
-	int lps[m];
-	//cout << "1" << endl;
-	Compute_prefix(p, lps);
-	/*for(int i = 1; i < m; i++)
-		cout<<lps[i] << " ";
-	cout << endl;
-	*/
-	//cout << "2" << endl;
-	int q = 0;
-	int l = 0;
-	for(int i = 1; i < n; i++){
-		while(q > 0 && p[q] != t[i-1])
-			q = lps[q];
-		if(p[q] == t[i-1])
-			q++;
-		if(q == m-1){
-            l = 1;
-			printf("%d\n", i - m+1);
-			q = lps[q];
-		}
-	}
-	if(l == 0){
-        printf("\n");
-	}
-}
+
 int main()
 {
-    int n;
-    scanf("%d", &n);
-    while(n--){
-        int x;
-        scanf("%d", &x);
-        string s, t;
-        cin >> s >> t;
-        KMP_Matcher(t, s);
+    int t, l;
+    cin >> t;
+    while(t--){
+        int l;
+        cin >> l;
+        scanf("%s", pat);
+        strcpy(str, pat);
+        int l = strlen(str);
+        str[l] = '$';
+        str[l+1] = '\0';
+        zfunc();
     }
 }
