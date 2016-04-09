@@ -2,9 +2,7 @@
 
 using namespace std;
 
-string pat, text;
-
-vector<int> prefixFunc(){
+vector<int> prefixFunc(string pat){
     int n = pat.length();
     vector<int> v(n);
     v[0] = 0;
@@ -37,39 +35,32 @@ vector<int> prefixFunc(){
     return v;
 }
 
-vector<int> patternSearching(vector<int> &p){
 
-    int i = 0, j = 0;
-    int l = text.length();
-    int l1 = pat.length();
-    vector<int> v;
-    while(i < l){
-        if(text[i] == pat[j]){
-            i++;
-            j++;
-            if(j == l1){
-                v.push_back(i-l1);
-                j = p[j-1];
-            }
-        }else if(j != 0){
-            j = p[j-1];
-        }else{
-            i++;
-        }
-    }
-    for(int i = 0; i < v.size(); i++){
-        cout << v[i] << " ";
-    }
-    cout << endl;
-    return v;
-}
 
 
 int main()
 {
-    cin >> pat >> text;
-    vector<int> v = prefixFunc();
-    vector<int> ans = patternSearching(v);
+    int t;
+    cin >> t;
+    for(int i = 1; i <= t; i++){
+        string str,pat;
+        cin >> str;
+        int l = str.length();
+        for(int j = l-1; j >= 0; j--){
+            pat += str[j];
+        }
+        pat += '$';
+
+        pat += str;
+
+        vector<int> v = prefixFunc(pat);
+        /*for(int j = 0; j < v.size(); j++)
+            cout << v[j];
+        cout << endl;
+        */int a = v[v.size()-1];
+        cout << "Case " << i << ": " << 2*l-a << endl;
 
 
+
+    }
 }

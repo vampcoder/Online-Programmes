@@ -55,21 +55,27 @@ vector<int> patternSearching(vector<int> &p){
             j = p[j-1];
         }else{
             i++;
-        }
     }
-    for(int i = 0; i < v.size(); i++){
+        }
+    /*for(int i = 0; i < v.size(); i++){
         cout << v[i] << " ";
     }
     cout << endl;
-    return v;
+    */return v;
 }
 
 
 int main()
 {
-    cin >> pat >> text;
-    vector<int> v = prefixFunc();
-    vector<int> ans = patternSearching(v);
+    int t;
+    cin >> t;
+    for(int i = 1; i <= t; i++){
+        cin >> text >> pat;
+        vector<int> v = prefixFunc();
+        vector<int> ans = patternSearching(v);
+        int a = ans.size();
+        printf("Case %d: %d\n", i, a);
+    }
 
 
 }
