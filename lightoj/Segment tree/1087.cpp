@@ -1,43 +1,55 @@
 #include<bits/stdc++.h>
 
+typedef long long ll;
+
 using namespace std;
+
 struct node{
     int l;
     int r;
-    int val;
+    ll val;
+    int cnt;
 };
 
-int arr[100010];
-struct node seg[1000010];
-int n;
+ll arr[100010];
+struct node seg[700010];
+ll n,count1;
 
 void construct(int ss, int se, int i){
     if(ss == se){
         seg[i].val = arr[ss];
         seg[i].l = 0;
         seg[i].r = 0;
+        if(arr[ss] != 0)
+            seg[i].cnt = 1;
+        else
+            seg[i].cnt = 0;
         return;
     }
     int mid = (ss+se)/2;
     construct(ss, mid, 2*i+1);
-    construct(mid, se, 2*i+2);
-    seg[i].l = seg[2*i+1].l+seg[2*i+1].r + 1;
-    seg[i].r = seg[2*i+2].l+ seg[2*i+2].r + 1;
+    construct(mid+1, se, 2*i+2);
+    seg[i].l = seg[2*i+1].cnt;
+    seg[i].r = seg[2*i+2].cnt;
+    seg[i].cnt = seg[i].l + seg[i].r;
 }
 
-int delentry(int ss, int se, int i, int k){
-    if(k == 1){
-        return seg[i];
+ll delentry(int ss, int se, int i, int k){
+    if (ss < 0 || se > 160000)
+        return 0;
+    if(ss == se){
+        seg[i].cnt = 0;
+        return seg[i].val;
     }
-
     int mid = (ss+ se)/2;
+    seg[i].cnt--;
 
     if(k <= seg[i].l){
         seg[i].l--;
         return delentry(ss, mid, 2*i+1, k);
     }else{
         seg[i].r--;
-        return delentry(mid, se, 2*i+2, k-l);
+        return delentry(mid+1, se, 2*i+2, k-seg[i].l);
     }
 }
 
@@ -47,27 +59,54 @@ void addEntry(int ss, int se, int i, int q, int val){
     }
     if(ss == se){
         seg[i].val = val;
+
+        seg[i].cnt = 1;
+        seg[i].l = 0;
+        seg[i].r = 0;
         return;
     }
 
     int mid = (ss +se)/2;
     addEntry(ss, mid, 2*i+1, q, val);
-    addEntry(mid, se, 2*i+1, q, val);
-    seg[i].l = seg[2*i+1].l+seg[2*i+1].r + 1;
-    seg[i].r = seg[2*i+2].l+ seg[2*i+2].r + 1;
-
-
+    addEntry(mid+1, se, 2*i+2, q, val);
+    seg[i].l = seg[2*i+1].cnt;
+    seg[i].r = seg[2*i+2].cnt;
+    seg[i].cnt = seg[i].l + seg[i].r;
 }
 
 
 int main()
 {
-    int t, q;
+    ll t, q, p;
     cin >> t;
     for(int i = 0; i < t; i++){
+        printf("Case %d:\n", i+1);
         memset(seg, 0, sizeof seg);
+        memset(arr, 0, sizeof arr);
         cin >> n >> q;
-
+        count1 = n;
+        char ch;
+        for(int j = 0; j < n; j++){
+            cin >> arr[j];
+        }
+        if(n != 0)
+            construct(0, 160000, 0);
+        for(int j = 0; j < q; j++){
+            cin >> ch >> p;
+            if(ch == 'a'){
+                n++;
+                addEntry(0, 160000, 0, n-1, p);
+                count1++;
+            }else{
+               // cout << "count " << count1 << endl;
+                if(count1 < p || p <= 0){
+                    printf("none\n");
+                }else{
+                    int ans = delentry(0, 160000, 0, p);
+                    printf("%d\n", ans);
+                    count1--;
+                }
+            }
+        }
     }
-
 }

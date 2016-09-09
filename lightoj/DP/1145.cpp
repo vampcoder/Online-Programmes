@@ -1,45 +1,52 @@
-#include <iostream>
+#include<bits/stdc++.h>
+
 using namespace std;
+long long dp[1001][15001];
+int k;
+#define N 100000007
 
-#define M 100000007
+long long rec(int n, int s){
+	if(s < 0){	
+		return 0;
+	}
+	if(s == 0){
+		if(n == 0){
+				dp[n][s] = 1;
+				return 1;
+		}else{
+				dp[n][s] = 0;
+				return 0;
+		}
+	}
+	if(n == 0)
+			if(s != 0)
+					return 0;
 
-long long  arr[1005][15007] = {0};
-int main() {
-	int t;
+
+	if(dp[n][s] != -1)
+			return dp[n][s];
+
+	long long  ret = 0;
+	
+	for(int i = 0; i < k; i++){
+		ret = (ret + (rec(n-1, s-i-1)))%N;
+	}
+	
+	dp[n][s] = ret%N;
+	
+	return ret%N;
+}
+
+int main()
+{
+	int t, n, s;
 	cin >> t;
 	for(int i = 1; i <= t; i++){
-		int n, s, k;
+		for(int j = 0; j < 1001; j++)
+				for(int l = 0; l < 15001; l++)
+						dp[j][l] = -1;
 		cin >> n >> k >> s;
+		cout << rec(n, s)%N;
 
-		for(int j = 1; j <= n; j++){
-			arr[j][0] = 0;
-		}
-		for(int j = 0; j <= s; j++){
-			arr[0][j] = 1;
-		}
-		for(int j = 1; j <= n; j++){
-			for(int l = 1; l <= s; l++){
-
-                arr[j][l] = (arr[j-1][l-1]+arr[j][l-1]);
-                if(l >= k+1){
-                    arr[j][l] = (arr[j][l]-arr[j-1][l-k-1]);
-                }
-                arr[j][l]= (arr[j][l]+M)%M;
-			}
-		}
-		/*for(int j = 0; j <= n; j++){
-            for(int l = 0; l <= s; l++){
-                cout << arr[j][l] << " ";
-            }
-            cout << endl;
-		}*/
-		long long ans;
-		if(arr[n][s] == 0){
-            ans = 0;
-		}else{
-            ans = (arr[n][s]-arr[n][s-1]+M)%M;
-		}
-		cout << "Case "<<i <<": " << ans << endl;
 	}
-	return 0;
 }
