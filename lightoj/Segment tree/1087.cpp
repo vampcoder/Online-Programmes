@@ -11,7 +11,7 @@ struct node{
     int cnt;
 };
 
-ll arr[100010];
+ll arr[160010];
 struct node seg[700010];
 ll n,count1;
 
@@ -83,16 +83,17 @@ int main()
         printf("Case %d:\n", i+1);
         memset(seg, 0, sizeof seg);
         memset(arr, 0, sizeof arr);
-        cin >> n >> q;
+        scanf("%lld%lld", &n, &q);
         count1 = n;
         char ch;
         for(int j = 0; j < n; j++){
-            cin >> arr[j];
+            scanf("%lld", &arr[j]);
         }
         if(n != 0)
             construct(0, 160000, 0);
         for(int j = 0; j < q; j++){
-            cin >> ch >> p;
+            getchar();
+            scanf("%c %d", &ch, &p);
             if(ch == 'a'){
                 n++;
                 addEntry(0, 160000, 0, n-1, p);
